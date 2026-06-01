@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">
+    Order Details
+</h1>
+
+<div class="card p-4 shadow-sm">
+
+    <h4>
+        Order #{{ order.id }}
+    </h4>
+
+    <p>
+
+        <strong>Date:</strong>
+        {{ order.created_at }}
+
+    </p>
+
+    <p>
+
+        <strong>Payment Status:</strong>
+
+        {% if order.paid %}
+
+        <span class="badge bg-success">
+            Paid
+        </span>
+
+        {% else %}
+
+        <span class="badge bg-danger">
+            Pending
+        </span>
+
+        {% endif %}
+
+    </p>
+
+    {% if order.payment_id %}
+
+    <p>
+
+        <strong>Payment ID:</strong>
+        {{ order.payment_id }}
+
+    </p>
+
+    {% endif %}
+
+    <hr>
+
+    <h4 class="mb-3">
+        Products
+    </h4>
+
+    <table class="table table-bordered text-center">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>Product</th>
+
+                <th>Price</th>
+
+                <th>Quantity</th>
+
+                <th>Total</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for item in order.items.all %}
+
+            <tr>
+
+                <td>
+
+                    {{ item.product.name }}
+
+                </td>
+
+                <td>
+
+                    ₹{{ item.price }}
+
+                </td>
+
+                <td>
+
+                    {{ item.quantity }}
+
+                </td>
+
+                <td>
+
+                    ₹{{ item.get_cost }}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <h3 class="text-end mt-4">
+
+        Grand Total:
+        <span class="text-success">
+
+            ₹{{ order.get_total_cost }}
+
+        </span>
+
+    </h3>
+
+</div>
+
+{% endblock %}

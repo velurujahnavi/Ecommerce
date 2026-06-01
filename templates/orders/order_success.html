@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if order %}
+<div class="text-center mt-5">
+    <h1 class="text-success">Order Placed Successfully!</h1>
+    <p>Your order number is <strong>#{{ order.id }}</strong></p>
+    <p>Total Amount: <strong>₹{{ order.get_total_cost }}</strong></p>
+    <a href="/" class="btn btn-primary">Continue Shopping</a>
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <h1>Your cart is empty.</h1>
+    <a href="/" class="btn btn-primary">Go to Home</a>
+</div>
+{% endif %}
+{% endblock %}

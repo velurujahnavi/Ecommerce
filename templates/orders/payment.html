@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+
+    <h1 class="mb-4">
+        Complete Payment
+    </h1>
+
+    <h3>
+        Order #{{ order.id }}
+    </h3>
+
+    <h2 class="text-success mb-4">
+        ₹{{ order.get_total_cost }}
+    </h2>
+
+    <button id="rzp-button"
+            class="btn btn-success btn-lg">
+        Pay Now
+    </button>
+
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+var options = {
+
+    "key": "{{ razorpay_key }}",
+
+    "amount": "{{ amount }}",
+
+    "currency": "INR",
+
+    "name": "SHOP VERSE",
+
+    "description": "Ecommerce Payment",
+
+    "method": {
+        "upi": true,
+        "card": true,
+        "netbanking": true,
+        "wallet": true
+    },
+
+    "order_id": "{{ razorpay_order_id }}",
+
+    "handler": function (response){
+
+        window.location.href =
+        "{% url 'payment_success' order.id %}?razorpay_payment_id=" +
+        response.razorpay_payment_id;
+    },
+
+    "theme": {
+        "color": "#198754"
+    }
+};
+
+var rzp1 = new Razorpay(options);
+
+document.getElementById('rzp-button').onclick = function(e){
+
+    rzp1.open();
+
+    e.preventDefault();
+}
+
+</script>
+
+{% endblock %}
